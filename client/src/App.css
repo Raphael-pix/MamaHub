@@ -1,0 +1,22 @@
+.App{
+    background-color: #FCFBFB;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.body{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+button{
+    padding: 7px 15px;
+    background-color: #FF4F00;
+    border: 0;
+    outline: 0;
+    border-radius: 5px;
+    font-weight: 600;
+    color: white;
+    text-transform: capitalize;
+    cursor: pointer;
+}

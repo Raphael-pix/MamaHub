@@ -1,0 +1,17 @@
+.group-section-wrapper{
+    padding-bottom: 20px;
+}
+.groups-section-title{
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+.groups-wrapper{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    overflow: hidden;
+    overflow-x: scroll;
+}
+.groups-wrapper::-webkit-scrollbar{
+    display: none;
+}

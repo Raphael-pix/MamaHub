@@ -1,0 +1,165 @@
+.banner{
+    width: 100%;
+    padding: 20px 30px;
+    background-color: #FF4F00;
+    height: 300px;
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    position: relative;
+}
+.banner-text-section{
+    flex: 1;
+    color: #FFFFFF;
+}
+.superText{
+    font-size: 2.7rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-bottom: 10px;
+    line-height: 3rem;
+}
+.subText{
+    font-size: .7rem;
+    font-weight: 400;
+    padding-bottom: 10px;
+}
+.FAB{
+    margin-top: 5px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #111;
+    border-radius: 7px;
+    background-color: #FFD60A;
+    border: 0;outline: 0;
+    cursor: pointer;
+}
+.FAB span{
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.banner-image-section{
+    height: 100%;
+    flex: 1;
+}
+.banner-image-section img{
+    width: 100%;height: 100%;
+    object-fit: contain;
+}
+.close-icon{
+    position: absolute;
+    top: 2%;right: 2%;
+    cursor: pointer;
+}
+
+
+
+.landing-banner-section,.group-pofile-banner{
+    height: 350px;
+    display: flex;
+    padding: 0 30px;
+    background-color: #FF4F00;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    color: #FFFFFF;
+}
+.landing-banner-section-text{
+    width: 500px;
+}
+.landing-banner-section-super-text{
+    font-size: 2.5rem;
+    padding-bottom: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    line-height: 40px;
+}
+.landing-banner-section-sub-text{
+    font-size:.9em;
+    font-weight: 400;
+}
+.landing-banner-section-image-container{
+    flex: .5;
+    height: 100%;
+}
+.landing-banner-section-image-container img{
+    height: 100%;width: 100%;
+}
+
+/* group banner styling  */
+.group-pofile-banner{
+    height: 250px;
+    justify-content:initial;
+    gap: 20px;
+    background-color: #d9d9d9;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+}
+.group-profile-image-container{
+    width: 180px;
+    height: 200px;
+    border-radius: 15px;
+    z-index: 2;
+}
+.group-profile-image-container img{
+    height: 100%;width: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+.group-details-wrapper{
+    padding: 0 20px;
+    z-index: 2;
+    flex: .8;
+}
+.group-details-wrapper .group-name{
+    font-size: 2.2rem;
+    text-transform: capitalize;
+    margin-bottom: 3px;
+}
+.group-details-wrapper .status-members-count__warpper{
+    display: flex;
+    gap: 5rem;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    font-size: .8rem;
+}
+.member-count-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.topics-list-wrapper{
+    font-weight: 500;
+    text-transform: capitalize;
+    margin: 10px 0;
+    font-size: .72rem;
+}
+.group-description{
+    margin: 10px 0;
+    font-weight: 400;
+    font-size: .82rem;
+}
+.group-details-wrapper .action-buttons-container{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+.group-details-wrapper .action-buttons-container button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 7px 30px;
+    width: 120px;
+}
+.fade-over{
+    background-color: #1111119a;
+    position: absolute;
+    top: 0;bottom: 0;left: 0;right: 0;
+    z-index: 1;
+}

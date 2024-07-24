@@ -1,0 +1,33 @@
+.sharedPost{
+    margin: 10px 0;
+}
+.homepage-section .title,.recommended .header .title{
+    font-weight: 600;
+    color: #111;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    text-transform: capitalize;
+}
+.recommended{
+    padding: 10px 12px;
+    border: 1px solid #F1F0F0;
+    border-radius: 10px;
+    width: fit-content;height: fit-content;
+    margin: 45px 0;
+    margin-bottom: 10px;
+}
+.recommended > .header{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.recommended .header .title{
+    margin-bottom: 0;
+}
+.recommended .header .more-btn{
+    color: #434343;
+    font-size: .65rem;
+    font-weight: 500;
+}

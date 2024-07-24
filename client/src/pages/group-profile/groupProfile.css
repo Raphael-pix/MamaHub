@@ -1,0 +1,22 @@
+.group-profile-body{
+    margin: 20px 0;
+}
+.suggested-section{
+    padding: 10px 0;
+}
+.suggested-section .title{
+    font-size: 1.3rem;
+    color: #111;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+.suggested-section-items{
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    overflow-x: scroll;
+    align-items: center;
+}
+.suggested-section-items::-webkit-scrollbar{
+    display: none;
+}
