@@ -1,9 +1,11 @@
 import "./navbar.css";
 
 import menu from "./navMenu";
+import { GlobalContext } from "../../context/context";
 
 import { Link, NavLink } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { useContext } from "react";
 
 import { IoNotificationsOutline } from "react-icons/io5";
 import { MdOutlineAddBox } from "react-icons/md";
@@ -13,7 +15,7 @@ const cookies = new Cookies();
 export default function Navbar() {
   const avatar = cookies.get("image");
   const userId = cookies.get("userId");
-  console.log(avatar)
+  const {setIsCreatePostVisible}=useContext(GlobalContext)
 
   return (
     <nav className="navbar-container">
@@ -37,7 +39,7 @@ export default function Navbar() {
       </ul>
 
       <div className="right-section">
-        <MdOutlineAddBox size={24} className="icon-btns" />
+        <MdOutlineAddBox size={24} className="icon-btns" onClick={()=>setIsCreatePostVisible(true)}/>
         <IoNotificationsOutline size={24} className="icon-btns" />
 
         <Link to={`/user/profile/${userId}`}>

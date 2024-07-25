@@ -13,6 +13,7 @@ export default function GlobalState({ children }) {
     password: "",
     confirmPassword: "",
   });
+  const[isCreatePostVisible,setIsCreatePostVisible] = useState(false)
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -61,7 +62,9 @@ export default function GlobalState({ children }) {
         currentGroupSection,
         setCurrentGroupSection,
         currentUserSection,
-        setCurrentUserSection
+        setCurrentUserSection,
+        isCreatePostVisible,
+        setIsCreatePostVisible
       }}
     >
       {children}
