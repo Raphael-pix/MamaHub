@@ -1,7 +1,7 @@
 import "./forms.css";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from 'universal-cookie'
@@ -11,6 +11,8 @@ import { FaRegUser } from "react-icons/fa6";
 import topics from "./topics";
 import Searchbar from "../../components/Searchbar/Searchbar";
 import AddMemebersContainer from "../../components/addMembersContainer/AddMemebersContainer";
+import { GlobalContext } from "../../context/context";
+import useOutsideClick from "../../hooks/OutsideClick";
 
 
 const cookies = new Cookies()
@@ -34,8 +36,10 @@ export default function CreateGroup() {
   const [results, setResults] = useState([]);
   const [checkedTopics, setCheckedTopics] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
+  const{setIsCreateGroupVisible} = useContext(GlobalContext)
 
   const navigate = useNavigate();
+  const outsideRef = useRef()
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -140,9 +144,14 @@ export default function CreateGroup() {
     });
   };
 
+  const closeCreateGroup = ()=>{
+    setIsCreateGroupVisible(false)
+    setForm({...form,initialState})
+  }
+  useOutsideClick(outsideRef,closeCreateGroup)
   return (
-    <div className="create-group-form form-wrapper">
-      <div className="form-container create-profile-form">
+    <div className="create-group-form-wrapper form-wrapper">
+      <div className="form-container create-group-form" ref={outsideRef}>
         <h1 className="form-title">create a group</h1>
 
         <div className="form-input-container create-group-input-container">
@@ -311,6 +320,7 @@ export default function CreateGroup() {
           <button type="submit" className="submit-btn" onClick={handleSubmit}>
             create
           </button>
+          <button className="close-btn" onClick={closeCreateGroup}>close</button>
         </div>
         {error ? (
           <div className="error-message">

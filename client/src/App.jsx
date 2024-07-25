@@ -1,7 +1,7 @@
 import "./App.css";
 
 import { Routes, Route } from "react-router-dom";
-import { useContext} from "react";
+import { useContext } from "react";
 import { StreamChat } from "stream-chat";
 import Cookies from "universal-cookie";
 
@@ -40,7 +40,7 @@ if (authToken) {
 }
 
 function App() {
-  const { isGroupSelected, isCreatePostVisible } =
+  const { isGroupSelected, isCreatePostVisible, isCreateGroupVisible } =
     useContext(GlobalContext);
 
   //check if the user is logged in if not sends them to the get started page to log in or create an account
@@ -87,7 +87,6 @@ function App() {
                       <Routes>
                         <Route path="/home" element={<Home />} />
                         <Route path="/groups" element={<Group />} />
-                        <Route path="/create-group" element={<CreateGroup />} />
                         <Route
                           path="/group/profile/:id"
                           element={<GroupProfile />}
@@ -98,8 +97,13 @@ function App() {
                         />
                       </Routes>
                       {isCreatePostVisible && (
-                        <div className="create-journey-wrapper" >
+                        <div className="create-wrapper">
                           <CreateJourney />
+                        </div>
+                      )}
+                      {isCreateGroupVisible && (
+                        <div className="create-wrapper">
+                          <CreateGroup />
                         </div>
                       )}
                     </div>

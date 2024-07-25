@@ -1,6 +1,6 @@
 import "./sidebar.css";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import axios from "axios";
@@ -12,6 +12,7 @@ import { TbLogout2 } from "react-icons/tb";
 import Logo from "../logo/Logo";
 import Searchbar from "../Searchbar/Searchbar";
 import ItemWrapper from "./itemContainer";
+import { GlobalContext } from "../../context/context";
 
 
 
@@ -21,6 +22,7 @@ export default function SideBar() {
   const navigate = useNavigate();
   const userId = cookies.get('userId')
   const [groups,setGroups]= useState([])
+  const {setIsCreateGroupVisible}=useContext(GlobalContext)
 
 
 
@@ -71,12 +73,10 @@ export default function SideBar() {
       <div className="settings sidebar-content">
         <ul className="settings-list list">
           <li className="settings-item list-item-header">
-            <NavLink to={"/create-group"} className="link">
-              <div className="link">
+              <div className="link" onClick={()=>setIsCreateGroupVisible(true)}>
                 <MdGroup size={18} />
                 <span>create a group</span>
               </div>
-            </NavLink>
           </li>
           <li className="settings-item list-item-header">
             <NavLink to={"/settings"} className="link">

@@ -289,10 +289,10 @@
 }
 
 /* create journey form */
-.create-post-form-wrapper{
+.create-post-form-wrapper,.create-group-form-wrapper{
     margin: 0;
 }
-.create-post-form{
+.create-post-form,.create-group-form{
     position: relative;
     z-index: 2;
     background-color: #FFFFFF;
