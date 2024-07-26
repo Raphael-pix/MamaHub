@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
 import "./itemContainer.css";
 import { IoMdAddCircleOutline } from "react-icons/io";
 
-const ItemContainer = ({avatar,name,categories}) => {
+const ItemContainer = ({ id, avatar, name, categories }) => {
   return (
     <div className="item-container">
       <div className="user-Avatar-container">
@@ -10,17 +11,21 @@ const ItemContainer = ({avatar,name,categories}) => {
       </div>
       <div className="user-details-wrapper">
         <div className="header">
-          <h1 className="username">{name}</h1>
+          <Link to={`/group/profile/${id}`}>
+            <h1 className="username">{name}</h1>
+          </Link>
           <button className="follow-btn">
             <IoMdAddCircleOutline size={14} color="#FFFFFF" />
-            <span>Follow</span>
+            <span>join</span>
           </button>
         </div>
-        <p className="categories">{
-          categories.map((item)=>{
-            return item
-          }).join(', ')
-          }</p>
+        <p className="categories">
+          {categories
+            .map((item) => {
+              return item;
+            })
+            .join(", ")}
+        </p>
         {/*  
         <p className="description">
           {description}
