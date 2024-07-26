@@ -81,6 +81,10 @@
 .form .icon{
     color: #CCCCCC;
 }
+.showPassword-container{
+    align-self: flex-end;
+    cursor: pointer;
+}
 .form-input{
     width: 100%;
     background-color: transparent;

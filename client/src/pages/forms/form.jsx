@@ -5,7 +5,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 
-import { FaRegUser, FaLock } from "react-icons/fa6";
+import { FaRegUser, FaLock, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 import Logo from "../../components/logo/Logo";
 import { GlobalContext } from "../../context/context";
@@ -22,6 +22,7 @@ export default function Signup() {
   const { isSignup, switchForm } = useContext(GlobalContext);
   const [, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isPassowrdVisible, setIsPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -61,7 +62,7 @@ export default function Signup() {
       if (!isSignup) {
         cookies.set("profile Token", result.profileToken);
         cookies.set("image", result.avatar);
-      }else{
+      } else {
         cookies.set("hashed password", result.hashedPassword);
       }
 
@@ -104,13 +105,23 @@ export default function Signup() {
               <div className="input-wrapper">
                 <FaLock size={16} className="user-icon icon" />
                 <input
-                  type="password"
+                  type={isPassowrdVisible ? "text" : "password"}
                   name="password"
                   id="password"
                   className="form-input"
                   placeholder=""
                   onChange={handleChange}
                 />
+                <div
+                  className="showPassword-container"
+                  onClick={() => setIsPasswordVisible(!isPassowrdVisible)}
+                >
+                  {isPassowrdVisible ? (
+                    <FaRegEye size={14} className="icon" />
+                  ) : (
+                    <FaRegEyeSlash size={14} className="icon" />
+                  )}
+                </div>
               </div>
             </div>
             {isSignup && (
@@ -121,13 +132,23 @@ export default function Signup() {
                 <div className="input-wrapper">
                   <FaLock size={16} className="user-icon icon" />
                   <input
-                    type="password"
+                    type={isPassowrdVisible ? "text" : "password"}
                     name="confirmPassword"
                     id="confirmPassword"
                     className="form-input"
                     placeholder=""
                     onChange={handleChange}
                   />
+                  <div
+                    className="showPassword-container"
+                    onClick={() => setIsPasswordVisible(!isPassowrdVisible)}
+                  >
+                    {isPassowrdVisible ? (
+                      <FaRegEye size={14} className="icon" />
+                    ) : (
+                      <FaRegEyeSlash size={14} className="icon" />
+                    )}
+                  </div>
                 </div>
               </div>
             )}
