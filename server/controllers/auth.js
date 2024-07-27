@@ -230,7 +230,7 @@ const search = async (req, res) => {
 // group controllers
 
 const createGroup = async (req, res) => {
-  const { avatar, banner, name, description, members, topics, userId } =
+  const { avatar, banner, name, description,status,members, topics, userId } =
     req.body;
   const currentDate = new Date();
   const client = StreamChat.getInstance(api_key, api_secret);
@@ -246,11 +246,15 @@ const createGroup = async (req, res) => {
     //create a random groupID
     const groupId = crypto.randomBytes(16).toString("hex");
     const allMembers = [...members, { userId }];
+    const formattedMembers = allMembers.map((member) => ({
+      user: { id: member.userId },
+    }));
 
     const channel = client.channel("messaging", groupId, {
       image: avatar,
       banner: banner,
       name: name,
+      status: status,
       description: description,
       members: formattedMembers,
       topics: topics,
@@ -265,6 +269,7 @@ const createGroup = async (req, res) => {
       banner,
       name,
       description,
+      status,
       members: allMembers,
       topics,
       created_by: userId,
@@ -278,9 +283,6 @@ const createGroup = async (req, res) => {
         .status(500)
         .json({ message: ["unable to save group to database"] });
     }
-    const formattedMembers = allMembers.map((member) => ({
-      user: { id: member.userId },
-    }));
     const addGroupsToUserDb = async () => {
       const allMembers = [...members, { userId }];
       const updatePromises = allMembers.map((member) =>

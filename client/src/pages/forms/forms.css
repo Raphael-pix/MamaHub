@@ -298,7 +298,7 @@
 }
 .create-post-form,.create-group-form{
     position: relative;
-    z-index: 2;
+    z-index: 3000;
     background-color: #FFFFFF;
     margin-top:2rem ;
 }

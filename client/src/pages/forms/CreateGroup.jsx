@@ -53,7 +53,7 @@ export default function CreateGroup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { avatar, banner, name, description,members,topics,userId } = form;
+    const { avatar, banner, name, description,status,members,topics,userId } = form;
 
     try {
       setLoading(true);
@@ -64,6 +64,7 @@ export default function CreateGroup() {
           banner,
           name,
           description,
+          status,
           members,
           topics,
           userId
