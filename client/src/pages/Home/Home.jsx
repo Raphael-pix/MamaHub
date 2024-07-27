@@ -19,6 +19,7 @@ const Home = () => {
   useEffect(() => {
     getAllGroups();
   }, []);
+  const cap = ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam necquam sit amet sem tempus porta.'
 
   return (
     <section className="Home-page">
@@ -26,10 +27,10 @@ const Home = () => {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <section className="sharedPost homepage-section">
           <h1 className="title">shared journeys</h1>
-          <PostItem />
-          <PostItem />
-          <PostItem />
-          <PostItem />
+          <PostItem name={'mary wanjiku'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
+          <PostItem name={'mary wanjiku'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
+          <PostItem name={'mary wanjiku'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
+          <PostItem name={'mary wanjiku'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
         </section>
         {groups.length > 0 ? (
           <section className="recommended homepage-section">

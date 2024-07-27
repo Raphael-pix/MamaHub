@@ -2,7 +2,6 @@ import "./forms.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
 
@@ -40,7 +39,6 @@ export default function CreateGroup() {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const { setIsCreateGroupVisible } = useContext(GlobalContext);
 
-  const navigate = useNavigate();
   const outsideRef = useRef();
 
   const handleChange = (e) => {
@@ -49,7 +47,6 @@ export default function CreateGroup() {
   };
 
   const reloadWindow = () => {
-    navigate("/home");
     window.location.reload();
   };
   const handleNext = (ref) => {

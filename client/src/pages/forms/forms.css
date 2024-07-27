@@ -376,3 +376,10 @@
     object-fit: cover;
     border-radius: inherit;
 }
+.post-buttons-wrapper{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
