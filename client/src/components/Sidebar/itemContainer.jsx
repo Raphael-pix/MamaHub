@@ -1,13 +1,32 @@
 /* eslint-disable react/prop-types */
 
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { GlobalContext } from "../../context/context"
 
-const ItemWrapper = ({title,items=[]})=>{
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+
+const ItemWrapper = ({title,items=[],id})=>{
+
+    const [selected,setSelected]=useState(null);
+    const handleSelection = ()=>{
+      setSelected(selected === id ? null : id)
+    }
+
     return(
     <div className="menu-list-item">
-        <li className="menu-item list-item-header ">{title}</li>
+        <h1 className="menu-item list-item-header" onClick={()=>handleSelection(id)}>
+          {title}
+          {
+          selected === id ? 
+          <MdKeyboardArrowUp size={16}/>
+          :
+          <MdKeyboardArrowDown size={16}/>
+          }
+        </h1>
+        {
+        selected === id &&
         <ItemContainer items={items}/>
+        }
       </div>
     )
 }

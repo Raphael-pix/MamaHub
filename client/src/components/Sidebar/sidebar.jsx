@@ -58,9 +58,9 @@ export default function SideBar() {
       <div className="dashboard sidebar-content">
         <h1 className="title">Dashboard</h1>
         <ul className="menu-list list">
-          <ItemWrapper title={"chats"}  />
-          <ItemWrapper title={"groups"} items={groups}/>
-          <ItemWrapper title={"continue reading"} />
+          <ItemWrapper title={"chats"}  id={1}/>
+          <ItemWrapper title={"groups"} items={groups} id={2}/>
+          <ItemWrapper title={"continue reading"} id={3}/>
 
           <li className="menu-item list-item-header">
             <NavLink to={"/profile"} className="link">

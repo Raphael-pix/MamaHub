@@ -42,8 +42,9 @@
 }
 .list-item-header{
     display: flex;
-    gap:10px;
+    gap:5px;
     align-items: center;
+    justify-content: space-between;
     margin: 4px 0;
     font-size: .78rem;
     font-weight: 500;
