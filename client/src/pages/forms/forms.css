@@ -27,13 +27,27 @@
 .form-wrapper .logo-wrapper img{
     width: 40px;height: 40px;
 }
+.form-container-header-wrapper{
+    position: relative;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 7px;
+}
+.form-container-header-wrapper .icon{
+    position: absolute;
+    left: 2%;
+    cursor: pointer;
+}
 .form-title{
     font-size: 1.8rem;
-    letter-spacing: 5%;
     padding-bottom: 7px;
     text-transform: capitalize;
     color: #111;
     text-align: center;
+}
+.form-container-header-wrapper .form-title{
+    padding-bottom: 0;
 }
 .sub-txt{
     text-align: center;

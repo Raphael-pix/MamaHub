@@ -4,9 +4,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Cookies from 'universal-cookie'
+import Cookies from "universal-cookie";
 
 import { FaRegUser } from "react-icons/fa6";
+import { MdOutlineArrowCircleLeft } from "react-icons/md";
 
 import topics from "./topics";
 import Searchbar from "../../components/Searchbar/Searchbar";
@@ -14,8 +15,7 @@ import AddMemebersContainer from "../../components/addMembersContainer/AddMemebe
 import { GlobalContext } from "../../context/context";
 import useOutsideClick from "../../hooks/OutsideClick";
 
-
-const cookies = new Cookies()
+const cookies = new Cookies();
 const initialState = {
   avatar:
     "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
@@ -23,9 +23,10 @@ const initialState = {
     "https://images.unsplash.com/photo-1548869447-faef5000334c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   name: "",
   description: "",
+  status: "public",
   members: [],
   topics: [],
-  userId:cookies.get('userId')
+  userId: cookies.get("userId"),
 };
 
 export default function CreateGroup() {
@@ -35,11 +36,12 @@ export default function CreateGroup() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [checkedTopics, setCheckedTopics] = useState([]);
+  const [formIndex, setFormIndex] = useState(0);
   const [selectedMembers, setSelectedMembers] = useState([]);
-  const{setIsCreateGroupVisible} = useContext(GlobalContext)
+  const { setIsCreateGroupVisible } = useContext(GlobalContext);
 
   const navigate = useNavigate();
-  const outsideRef = useRef()
+  const outsideRef = useRef();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -50,10 +52,30 @@ export default function CreateGroup() {
     navigate("/home");
     window.location.reload();
   };
+  const handleNext = (ref) => {
+    ref === "next"
+      ? setFormIndex((prevIndex) => {
+          if (prevIndex > 1) return prevIndex;
+          return prevIndex + 1;
+        })
+      : setFormIndex((prevIndex) => {
+          if (prevIndex < 0) return 0;
+          return prevIndex - 1;
+        });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { avatar, banner, name, description,status,members,topics,userId } = form;
+    const {
+      avatar,
+      banner,
+      name,
+      description,
+      status,
+      members,
+      topics,
+      userId,
+    } = form;
 
     try {
       setLoading(true);
@@ -67,7 +89,7 @@ export default function CreateGroup() {
           status,
           members,
           topics,
-          userId
+          userId,
         }
       );
       const result = await response.data;
@@ -80,6 +102,7 @@ export default function CreateGroup() {
       setError(err.response?.data?.message || err.name);
     }
     setLoading(false);
+    setFormIndex(0);
   };
 
   const onSearch = async (e) => {
@@ -119,7 +142,6 @@ export default function CreateGroup() {
     });
   };
 
-
   const addMembers = (member) => {
     setSelectedMembers((prevSelectedMembers) => {
       const newMembers = [...prevSelectedMembers, member];
@@ -127,15 +149,17 @@ export default function CreateGroup() {
         ...prevForm,
         members: newMembers,
       }));
-     setResults([])
-     setQuery('')
+      setResults([]);
+      setQuery("");
       return newMembers;
     });
   };
 
   const handleDelete = (value) => {
     setSelectedMembers((prevSelectedMembers) => {
-      const newMembers = prevSelectedMembers.filter((member) => member.userId !== value);
+      const newMembers = prevSelectedMembers.filter(
+        (member) => member.userId !== value
+      );
       // Update the form state with the new members list
       setForm((prevForm) => ({
         ...prevForm,
@@ -145,183 +169,207 @@ export default function CreateGroup() {
     });
   };
 
-  const closeCreateGroup = ()=>{
-    setIsCreateGroupVisible(false)
-    setForm({...form,initialState})
-  }
-  useOutsideClick(outsideRef,closeCreateGroup)
+  const closeCreateGroup = () => {
+    setIsCreateGroupVisible(false);
+    setForm({ ...form, initialState });
+  };
+  useOutsideClick(outsideRef, closeCreateGroup);
+
   return (
     <div className="create-group-form-wrapper form-wrapper">
       <div className="form-container create-group-form" ref={outsideRef}>
-        <h1 className="form-title">create a group</h1>
+        <div className="form-container-header-wrapper">
+          {formIndex > 0 && (
+            <MdOutlineArrowCircleLeft
+              size={26}
+              color="#111"
+              className="icon"
+              onClick={()=>handleNext("prev")}
+            />
+          )}
+          <h1 className="form-title">create a group</h1>
+        </div>
 
         <div className="form-input-container create-group-input-container">
-          <div className="input-container">
-            <label className="form-label" htmlFor="name">
-              name
-            </label>
-            <div className="input-wrapper">
-              <FaRegUser size={16} className="user-icon icon" />
-              <input
-                type="text"
-                name="name"
-                id="name"
-                className="form-input"
-                placeholder="enter name"
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="input-container">
-            <label className="form-label" htmlFor="description">
-              description
-            </label>
-            <div className="input-wrapper">
-              <textarea
-                type="text"
-                name="description"
-                id="description"
-                className="form-input"
-                placeholder=""
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="input-container">
-            <label className="form-label" htmlFor="name">
-              avatar url
-            </label>
-            <div className="input-wrapper">
-              <FaRegUser size={16} className="user-icon icon" />
-              <input
-                type="text"
-                name="avatar"
-                id="avatar"
-                className="form-input"
-                placeholder="enter avatar url"
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="input-container">
-            <label className="form-label" htmlFor="name">
-              banner url
-            </label>
-            <div className="input-wrapper">
-              <FaRegUser size={16} className="user-icon icon" />
-              <input
-                type="text"
-                name="banner"
-                id="banner"
-                className="form-input"
-                placeholder="enter banner url"
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="input-container">
-            <label className="form-label" htmlFor="status">
-              status
-            </label>
-            <div className="radio-input-wrapper">
-              <div className="input-wrapper radio">
-                <input
-                  type="radio"
-                  name="status"
-                  id="public"
-                  value={"public"}
-                  onChange={handleChange}
-                />
-                <span>Anyone can join(public)</span>
+          {formIndex === 0 && (
+            <>
+              <div className="input-container">
+                <label className="form-label" htmlFor="name">
+                  name
+                </label>
+                <div className="input-wrapper">
+                  <FaRegUser size={16} className="user-icon icon" />
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    className="form-input"
+                    placeholder="enter name"
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
-              <div className="input-wrapper radio">
-                <input
-                  type="radio"
-                  name="status"
-                  id="private"
-                  value={"private"}
-                  onChange={handleChange}
-                />
-                <span>Only authorized users can enter(private)</span>
+              <div className="input-container">
+                <label className="form-label" htmlFor="description">
+                  description
+                </label>
+                <div className="input-wrapper">
+                  <textarea
+                    type="text"
+                    name="description"
+                    id="description"
+                    className="form-input"
+                    placeholder=""
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="input-container">
-            <label className="form-label" htmlFor="status">
-              topics
-            </label>
-            <div className="checkbox-input-wrapper">
-              {topics.map((topic) => {
-                const isChecked = checkedTopics.includes(topic.name);
-                return (
-                  <div
-                    className={`input-wrapper checkbox ${
-                      isChecked ? "active" : ""
-                    }`}
-                    key={topic.id}
-                    onClick={() => handleCheckboxClick(topic)}
-                  >
+              <div className="input-container">
+                <label className="form-label" htmlFor="name">
+                  avatar url
+                </label>
+                <div className="input-wrapper">
+                  <FaRegUser size={16} className="user-icon icon" />
+                  <input
+                    type="text"
+                    name="avatar"
+                    id="avatar"
+                    className="form-input"
+                    placeholder="enter avatar url"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="input-container">
+                <label className="form-label" htmlFor="name">
+                  banner url
+                </label>
+                <div className="input-wrapper">
+                  <FaRegUser size={16} className="user-icon icon" />
+                  <input
+                    type="text"
+                    name="banner"
+                    id="banner"
+                    className="form-input"
+                    placeholder="enter banner url"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="input-container">
+                <label className="form-label" htmlFor="status">
+                  status
+                </label>
+                <div className="radio-input-wrapper">
+                  <div className="input-wrapper radio">
                     <input
-                      type="checkbox"
+                      type="radio"
                       name="status"
-                      id={topic.name}
-                      value={topic.name}
+                      id="public"
+                      value={"public"}
                       onChange={handleChange}
                     />
-                    <span>{topic.name}</span>
+                    <span>Anyone can join(public)</span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="input-container">
-            <label className="form-label" htmlFor="status">
-              add members
-            </label>
-            <div className="search-members-wrapper">
-              <Searchbar onSearch={onSearch} query={query} />
-              <div className="search-results-container">
-                {results && results.length > 0
-                  ? results.map((item) => {
-                      return (
-                        <div
-                          className="result-container"
-                          key={item.userId}
-                          onClick={() => addMembers(item)}
-                        >
-                          <div className="results-avatar">
-                            <img src={item.avatar} alt="" />
-                          </div>
-                          <p className="result-name">{item.name}</p>
-                        </div>
-                      );
-                    })
-                  : null}
+                  <div className="input-wrapper radio">
+                    <input
+                      type="radio"
+                      name="status"
+                      id="private"
+                      value={"private"}
+                      onChange={handleChange}
+                    />
+                    <span>Only authorized users can enter(private)</span>
+                  </div>
+                </div>
               </div>
-              {selectedMembers && selectedMembers.length > 0 ? (
-                <div className="members-list results">
-                  {selectedMembers.map((item) => {
+            </>
+          )}
+          {formIndex === 1 && (
+            <>
+              <div className="input-container">
+                <label className="form-label" htmlFor="status">
+                  topics
+                </label>
+                <div className="checkbox-input-wrapper">
+                  {topics.map((topic) => {
+                    const isChecked = checkedTopics.includes(topic.name);
                     return (
-                      <AddMemebersContainer
-                        avatar={item.avatar}
-                        name={item.name}
-                        key={item.userId}
-                        onDelete= {()=>handleDelete(item.userId)}
-                      />
+                      <div
+                        className={`input-wrapper checkbox ${
+                          isChecked ? "active" : ""
+                        }`}
+                        key={topic.id}
+                        onClick={() => handleCheckboxClick(topic)}
+                      >
+                        <input
+                          type="checkbox"
+                          name="status"
+                          id={topic.name}
+                          value={topic.name}
+                          onChange={handleChange}
+                        />
+                        <span>{topic.name}</span>
+                      </div>
                     );
                   })}
                 </div>
-              ) : null}
-            </div>
-          </div>
-          <button type="submit" className="submit-btn" onClick={handleSubmit}>
-            create
+              </div>
+
+              <div className="input-container">
+                <label className="form-label" htmlFor="status">
+                  add members
+                </label>
+                <div className="search-members-wrapper">
+                  <Searchbar onSearch={onSearch} query={query} />
+                  <div className="search-results-container">
+                    {results && results.length > 0
+                      ? results.map((item) => {
+                          return (
+                            <div
+                              className="result-container"
+                              key={item.userId}
+                              onClick={() => addMembers(item)}
+                            >
+                              <div className="results-avatar">
+                                <img src={item.avatar} alt="" />
+                              </div>
+                              <p className="result-name">{item.name}</p>
+                            </div>
+                          );
+                        })
+                      : null}
+                  </div>
+                  {selectedMembers && selectedMembers.length > 0 ? (
+                    <div className="members-list results">
+                      {selectedMembers.map((item) => {
+                        return (
+                          <AddMemebersContainer
+                            avatar={item.avatar}
+                            name={item.name}
+                            key={item.userId}
+                            onDelete={() => handleDelete(item.userId)}
+                          />
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </>
+          )}
+          <button
+            type="submit"
+            className="submit-btn"
+            onClick={formIndex !== 1 ? ()=>handleNext("next") : handleSubmit}
+          >
+            {formIndex !== 1 ? "next" : "create"}
           </button>
-          <button className="close-btn" onClick={closeCreateGroup}>close</button>
+          <button className="close-btn" onClick={closeCreateGroup}>
+            close
+          </button>
         </div>
         {error ? (
           <div className="error-message">
