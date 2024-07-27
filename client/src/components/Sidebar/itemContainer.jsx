@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 
-import { useContext, useState } from "react"
-import { GlobalContext } from "../../context/context"
+import {useState } from "react"
 
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const ItemWrapper = ({title,items=[],id})=>{
 
@@ -32,17 +32,14 @@ const ItemWrapper = ({title,items=[],id})=>{
 }
 
 const ItemContainer = ({items}) => {
-const {setSelectedGroup,setIsGroupSelected}=useContext(GlobalContext)
-const selectGroup = (value)=>{
-  setSelectedGroup(value)
-  setIsGroupSelected(true)
-}
 
   return (
     <ul className="joined-wrapper">
       {
         items.map((item)=>{
-           return <li className="joined-item" key={item._id} onClick={()=>selectGroup(item)}>{item.name}</li>
+           return <Link to={`/group/profile/${item.groupId}`} key={item._id}  className="joined-item-link">
+              <li className="joined-item"  >{item.name}</li>
+            </Link>
         })
       }
     </ul>

@@ -60,16 +60,14 @@
 .joined-wrapper{
     list-style-type: none;
 }
+.joined-item-link{
+    color: #444444;
+}
 .joined-item{
     padding: 6px 0;
     padding-left: 15px;
     font-size: .74rem;
     cursor: pointer;
-}
-.joined-item.active,.joined-item:hover{
-    background-color: #F0F0F0;
-    color: #111;
-    font-weight:500;
 }
 .dashboard{
     margin-bottom: 4px;
