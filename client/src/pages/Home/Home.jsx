@@ -19,7 +19,8 @@ const Home = () => {
   useEffect(() => {
     getAllGroups();
   }, []);
-  const cap = ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam necquam sit amet sem tempus porta.'
+  const cap =
+    " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam necquam sit amet sem tempus porta.";
 
   return (
     <section className="Home-page">
@@ -27,10 +28,38 @@ const Home = () => {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <section className="sharedPost homepage-section">
           <h1 className="title">shared journeys</h1>
-          <PostItem name={'mary wanjiku'} userProfile={'../../images/post.jpg'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
-          <PostItem name={'mary wanjiku'}  userProfile={'../../images/post.jpg'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
-          <PostItem name={'mary wanjiku'}  userProfile={'../../images/post.jpg'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
-          <PostItem name={'mary wanjiku'}  userProfile={'../../images/post.jpg'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
+          <PostItem
+            name={"mary wanjiku"}
+            mediaType={"image"}
+            userProfile={"../../images/post.jpg"}
+            media={"../../images/post.jpg"}
+            timeAdded={"1dy"}
+            caption={cap}
+          />
+          <PostItem
+            name={"mary wanjiku"}
+            mediaType={"image"}
+            userProfile={"../../images/post.jpg"}
+            media={"../../images/post.jpg"}
+            timeAdded={"1dy"}
+            caption={cap}
+          />
+          <PostItem
+            name={"mary wanjiku"}
+            mediaType={"image"}
+            userProfile={"../../images/post.jpg"}
+            media={"../../images/post.jpg"}
+            timeAdded={"1dy"}
+            caption={cap}
+          />
+          <PostItem
+            name={"mary wanjiku"}
+            mediaType={"image"}
+            userProfile={"../../images/post.jpg"}
+            media={"../../images/post.jpg"}
+            timeAdded={"1dy"}
+            caption={cap}
+          />
         </section>
         {groups.length > 0 ? (
           <section className="recommended homepage-section">
@@ -40,7 +69,7 @@ const Home = () => {
                 view more
               </Link>
             </div>
-            {groups.slice(0,5).map((group) => {
+            {groups.slice(0, 5).map((group) => {
               return (
                 <ItemContainer
                   avatar={group.avatar}
@@ -50,8 +79,7 @@ const Home = () => {
                   key={group._id}
                 />
               );
-            })
-}
+            })}
           </section>
         ) : null}
       </div>

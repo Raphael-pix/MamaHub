@@ -58,10 +58,11 @@ export default function Signup() {
       cookies.set("email", result.email);
       cookies.set("userId", result.userId);
 
-      //set the cookies only when logging in so as to avoid cookies being set as undefined
+      //set the cookies only when logging in/creating profile so as to avoid cookies being set as undefined
       if (!isSignup) {
         cookies.set("profile Token", result.profileToken);
         cookies.set("image", result.avatar);
+        cookies.set("username",result.name)
       } else {
         cookies.set("hashed password", result.hashedPassword);
       }

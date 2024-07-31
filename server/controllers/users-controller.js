@@ -107,23 +107,23 @@ const createProfile = async (req, res) => {
     const profileToken = updatedUser.profileToken;
 
     //update user info in database
-      const updateUser = await Users.updateOne(
-        { userId },
-        {
-          $set: {
-            avatar,
-            name,
-            dateOfBirth: date,
-            bio,
-            gender,
-            profileToken: updateToken,
-          },
-        }
-      );
-
-      if (updateUser.matchedCount === 0) {
-        return res.status(404).json({ message: ["User not found"] });
+    const updateUser = await Users.updateOne(
+      { userId },
+      {
+        $set: {
+          avatar,
+          name,
+          dateOfBirth: date,
+          bio,
+          gender,
+          profileToken: updateToken,
+        },
       }
+    );
+
+    if (updateUser.matchedCount === 0) {
+      return res.status(404).json({ message: ["User not found"] });
+    }
 
     res.status(200).json({ ...updatedUser, avatar, name, profileToken });
   } catch (error) {
@@ -151,7 +151,7 @@ const login = async (req, res) => {
 
     const success = await bcrypt.compare(password, user.password);
 
-    const { id, profileToken, avatar } = users[0];
+    const { id, profileToken, avatar, name } = users[0];
 
     //check if the user has the following properties so as to determine if the user has created their profile
     if (users[0].hasOwnProperty("name" || "bio" || "avatar")) {
@@ -160,6 +160,7 @@ const login = async (req, res) => {
       if (success) {
         res.status(200).json({
           token,
+          name,
           userId: id,
           profileToken: profileToken,
           email: users[0].email,
@@ -196,7 +197,7 @@ const getAllUsers = async (req, res) => {
 const getUserDetails = async (req, res) => {
   const { id } = req.query;
   try {
-    const user = await Users.findOne({userId:id} );
+    const user = await Users.findOne({ userId: id });
 
     if (!user) {
       return res.status(200).json({ message: "user not found" });
@@ -225,8 +226,6 @@ const search = async (req, res) => {
     res.status(500).json({ message: "Failed to search users" });
   }
 };
-
-
 
 //VALIDATION FUNCTIONS
 
