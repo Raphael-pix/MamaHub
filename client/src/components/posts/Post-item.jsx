@@ -4,13 +4,13 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaRegHeart , FaRegComment, FaRegBookmark } from "react-icons/fa";
 import { IoIosShareAlt } from "react-icons/io";
 
-const PostItem = ({post,name,timeAdded,caption}) => {
+const PostItem = ({userProfile,post,name,timeAdded,caption}) => {
   return (
     <section className="post-item-container">
       <div className="post-header">
         <div className="user-info-wrapper">
           <div className="user-avatar">
-            <img src={post} alt="user-avatar" />
+            <img src={userProfile} alt="user-avatar" />
           </div>
           <div className="username">
             <p className="name">{name}</p>

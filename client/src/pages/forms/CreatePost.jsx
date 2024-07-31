@@ -2,6 +2,7 @@ import "./forms.css";
 
 import { useContext, useRef, useState } from "react";
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 import { FaPlus } from "react-icons/fa";
 import { GlobalContext } from "../../context/context";
@@ -10,9 +11,11 @@ import { PostItem } from "../../components";
 
 const initialState = {
   media: null,
+  mediaPreview : '',
   caption: "",
   date: Date.now(),
 };
+const cookies = new Cookies();
 
 export default function CreatePost() {
   const [form, setForm] = useState(initialState);
@@ -21,6 +24,7 @@ export default function CreatePost() {
   const [showPreview, setShowPreview] = useState(false);
   const fileInputRef = useRef(null);
   const outsideRef = useRef();
+  const userProfile = cookies.get('image')
   const { setIsCreatePostVisible } = useContext(GlobalContext);
 
   const handleChange = (e) => {
@@ -34,16 +38,23 @@ export default function CreatePost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { post, caption } = form;
+    const { media, mediaPreview,caption } = form;
+    console.log(form)
 
     try {
       setLoading(true);
+      const formData = new FormData();
+      formData.append('mediaPreview', mediaPreview);
+      formData.append('media',media)
+      formData.append('caption', caption);
+
       const response = await axios.post(
         "http://localhost:5000/api/create-post",
+        formData,
         {
-          post,
-          caption,
-          date: initialState.date,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }
       );
       const result = await response.data;
@@ -61,16 +72,14 @@ export default function CreatePost() {
   const handleAddMedia = () => {
     fileInputRef.current.click();
   };
-  const handleFileChnage = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const mediaURL = URL.createObjectURL(file);
       setForm({
         ...form,
-        media: {
-          url: mediaURL,
-          type: file.type.startsWith("video") ? "video" : "image",
-        },
+        media: file,
+        mediaPreview: mediaURL
       });
     }
   };
@@ -95,10 +104,10 @@ export default function CreatePost() {
             <div className="input-container post-wrapper">
               <div className="post-preview-container">
                 {form.media ? (
-                  form.media.type === "image" ? (
-                    <img src={form.media.url} alt="" className="post-media" />
+                  form.media.type.startsWith('image/') ? (
+                    <img src={form.mediaPreview} alt="" className="post-media" />
                   ) : (
-                    <video src={form.media.url} alt="" className="post-media" />
+                    <video src={form.mediaPreview} alt="" className="post-media" />
                   )
                 ) : (
                   <FaPlus size={22} color="#d9d9d9" />
@@ -108,7 +117,8 @@ export default function CreatePost() {
                 type="file"
                 ref={fileInputRef}
                 accept="image/*,video/*"
-                onChange={handleFileChnage}
+                onChange={handleFileChange}
+                name="post"
               />
               <button className="add-media-btn" onClick={handleAddMedia}>
                 add media
@@ -136,7 +146,7 @@ export default function CreatePost() {
             >
               preview
             </button>
-            <button type="submit" className="submit-btn" onClick={handleSubmit}>
+            <button type="submit" className="submit-btn" disabled={form.media === null} onClick={handleSubmit}>
               share
             </button>
             <button className="close-btn" onClick={closeCreatePost}>
@@ -154,10 +164,11 @@ export default function CreatePost() {
           ) : null}
         </div>
       ) : (
-        <div className="form-container create-post-form" ref={outsideRef}>
+        <form className="form-container create-post-form" ref={outsideRef}>
           <PostItem
             name={"mary wanjiku"}
-            post={form.media.url}
+            userProfile={userProfile}
+            post={form.mediaPreview}
             timeAdded={"1dy"}
             caption={form.caption}
           />
@@ -172,7 +183,7 @@ export default function CreatePost() {
               close
             </button>
           </div>
-        </div>
+        </form>
       )}
     </div>
   );

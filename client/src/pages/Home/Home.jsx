@@ -27,10 +27,10 @@ const Home = () => {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <section className="sharedPost homepage-section">
           <h1 className="title">shared journeys</h1>
-          <PostItem name={'mary wanjiku'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
-          <PostItem name={'mary wanjiku'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
-          <PostItem name={'mary wanjiku'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
-          <PostItem name={'mary wanjiku'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
+          <PostItem name={'mary wanjiku'} userProfile={'../../images/post.jpg'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
+          <PostItem name={'mary wanjiku'}  userProfile={'../../images/post.jpg'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
+          <PostItem name={'mary wanjiku'}  userProfile={'../../images/post.jpg'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
+          <PostItem name={'mary wanjiku'}  userProfile={'../../images/post.jpg'} post={'../../images/post.jpg'} timeAdded={'1dy'} caption={cap}/>
         </section>
         {groups.length > 0 ? (
           <section className="recommended homepage-section">

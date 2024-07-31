@@ -1,17 +1,24 @@
 const express = require("express");
+const multer = require("multer")
 
 const {
   signup,
   login,
   createProfile,
   getAllUsers,
-  createGroup,
+  getUserDetails,
   search,
+} = require("../controllers/users-controller.js")
+const {
+  createGroup,
   getAllGroupsJoined,
   getAllGroups,
   getGroupDetails,
-  getUserDetails
-} = require("../controllers/auth.js");
+} = require("../controllers/groups-controller.js")
+
+const{shareJourney} = require("../controllers/posts-controller.js")
+const upload = multer({ dest: 'uploads/' }); // Configure multer to store files in 'uploads/' folder
+
 
 const router = express.Router();
 
@@ -25,5 +32,6 @@ router.get("/search-users", search);
 router.get("/get-groups", getAllGroupsJoined);
 router.get("/all-groups", getAllGroups);
 router.get("/group-details", getGroupDetails);
+router.post("/create-post",upload.single('media'),shareJourney)
 
 module.exports = router;

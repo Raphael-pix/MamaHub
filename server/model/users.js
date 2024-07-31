@@ -37,6 +37,12 @@ const usersSchema = new Schema({
     groups:{
         type:Object
     },
+    journeys:{
+        type:Object
+    },
+    Recommendations:{
+        type:Object
+    },
     date:{
         type: Date,
         default : Date.now
