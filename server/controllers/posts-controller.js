@@ -14,7 +14,7 @@ cloudinary.config({
   api_secret: cloudinary_api_secret,
 });
 
-const uploadFileToCloudinary = async (file_path, file_type) => {
+const uploadPostToCloudinary = async (file_path, file_type) => {
   try {
     let result;
     if (file_type === "image") {
@@ -43,7 +43,7 @@ const shareJourney = async (req, res) => {
 
   try {
     //upload post in cloudinary
-    const post = await uploadFileToCloudinary(file.path, fileType);
+    const post = await uploadPostToCloudinary(file.path, fileType);
     console.log(post);
     //create post in database
     const newPost = new Posts({
