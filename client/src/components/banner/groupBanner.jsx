@@ -2,20 +2,43 @@
 import "./banner.css";
 
 import { useContext } from "react";
+import axios from "axios";
+import Cookies from 'universal-cookie'
 
 import { FaUserGroup } from "react-icons/fa6";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 import { GlobalContext } from "../../context/context";
+import { BsThreeDots } from "react-icons/bs";
 
-const GroupBanner = ({ group }) => {
+
+const GroupBanner = ({ group,isMember }) => {
   const { setSelectedGroup, setIsGroupSelected } = useContext(GlobalContext);
   const { avatar, banner, name, members, description, topics } = group;
+  const cookie = new Cookies()
+  const userId = cookie.get('userId')
 
   const selectGroup = (value) => {
     setSelectedGroup(value);
     setIsGroupSelected(true);
   };
+
+  const handleJoinGroup = async()=>{
+    try{
+      const response = await axios.put(
+        "http://localhost:5000/api/create-group",
+        {
+          params:{
+            groupId: group.groupId,
+            userId: userId
+          }
+        }
+      )
+      console.log(response)
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   return (
     <header
@@ -44,13 +67,17 @@ const GroupBanner = ({ group }) => {
         <p className="group-description">{description}</p>
 
         <div className="action-buttons-container">
-          <button>join</button>
+          {
+            isMember ? <button>add post</button>
+            : <button onClick={handleJoinGroup}>join</button>
+          }
           <button onClick={() => selectGroup(group)}>
             <IoChatbubbleEllipsesOutline size={16} color="white" />
             chat
           </button>
         </div>
       </div>
+      <BsThreeDots size={24} color="white" className="settings-icon"/>
       <div className="fade-over"></div>
     </header>
   );

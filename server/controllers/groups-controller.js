@@ -1,5 +1,6 @@
 const StreamChat = require("stream-chat").StreamChat;
 const crypto = require("crypto");
+const chatClient = require("stream-chat").StreamChat;
 
 const Users = require("../model/users");
 const Groups = require("../model/groups");
@@ -142,6 +143,26 @@ const getGroupDetails = async (req, res) => {
   }
 };
 
+const joinGroup = async(req,res) =>{
+  const {userId,groupId} = req.query
+
+  try{
+  const user = await Users.findOne({ userId: userId });
+
+  if(user.groups.includes(groupId)){
+    return res.status(200).json({message:'user is already a member of the group'})
+  }
+
+  const filter = { type: 'messaging', id:groupId };
+  const channel = await chatClient.queryChannel(filter)
+  console.log(channel)
+  }catch(err){
+    console.log(err)
+    res.status(500).json({message:'unable to join group'})
+  }
+
+}
+
 //posts controllers
 
 
@@ -150,4 +171,5 @@ module.exports = {
   getAllGroupsJoined,
   getAllGroups,
   getGroupDetails,
+  joinGroup
 };

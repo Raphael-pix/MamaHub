@@ -11,12 +11,16 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { GlobalContext } from "../../context/context";
 import { Link, useParams } from "react-router-dom";
+import Cookies from 'universal-cookie'
 
 const GroupProfile = () => {
+  const cookies = new Cookies()
+  const userId = cookies.get('userId')
   const { currentGroupSection } = useContext(GlobalContext);
   const { id } = useParams();
   const [group, setGroup] = useState(null);
   const [users, setUsers] = useState([]);
+  const [userIsMember,setUserIsMember] = useState(false)
 
   const getAllUsers = async () => {
     try {
@@ -46,10 +50,23 @@ const GroupProfile = () => {
   useEffect(() => {
     getGroupDetails();
   }, [id]);
+ 
+  const checkUserisMember = (members)=>{
+    const membersId = members.map(member=>{
+      return member.userId
+    })
+    return membersId.includes(userId)
+  }
+  useEffect(()=>{
+    if(group){
+    setUserIsMember(checkUserisMember(group.members))
+    }
+  },[group])
+
   if (group) {
     return (
       <section className="group-profile">
-        <GroupBanner group={group} />
+        <GroupBanner group={group} isMember={userIsMember}/>
         <section className="group-profile-body">
           <Navigation />
           {currentGroupSection === "journeys" ? (
