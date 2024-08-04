@@ -163,9 +163,6 @@ const joinGroup = async(req,res) =>{
 
 }
 
-//posts controllers
-
-
 module.exports = {
   createGroup,
   getAllGroupsJoined,
