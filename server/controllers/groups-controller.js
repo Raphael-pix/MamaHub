@@ -1,6 +1,5 @@
 const StreamChat = require("stream-chat").StreamChat;
 const crypto = require("crypto");
-const chatClient = require("stream-chat").StreamChat;
 
 const Users = require("../model/users");
 const Groups = require("../model/groups");
@@ -13,7 +12,7 @@ const api_secret = process.env.STREAM_API_SECRET;
 // group controllers
 
 const createGroup = async (req, res) => {
-  const { avatar, banner, name, description,status,members, topics, userId } =
+  const { avatar, banner, name, description, status, members, topics, userId } =
     req.body;
   const currentDate = new Date();
   const client = StreamChat.getInstance(api_key, api_secret);
@@ -143,30 +142,47 @@ const getGroupDetails = async (req, res) => {
   }
 };
 
-const joinGroup = async(req,res) =>{
-  const {userId,groupId} = req.query
+const joinGroup = async (req, res) => {
+  const { userId, groupId } = req.body;
+  console.log(userId, groupId);
 
-  try{
-  const user = await Users.findOne({ userId: userId });
+  try {
+    const user = await Users.findOne({ userId: userId });
 
-  if(user.groups.includes(groupId)){
-    return res.status(200).json({message:'user is already a member of the group'})
+    if (user.groups.includes(groupId)) {
+      return res
+        .status(200)
+        .json({ message: "user is already a member of the group" });
+    }
+
+    const client = StreamChat.getInstance(api_key, api_secret);
+
+    const filter = { type: "messaging", id: groupId };
+    const channels = await client.queryChannels(filter);
+    if (channels.length === 0) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    const channel = channels[0];
+
+    await channel.addMembers([userId]);
+    console.log(`User ${userId} added to group ${groupId}`);
+
+    // Update the user's groups
+    user.groups.push(groupId);
+    await user.save();
+
+    res.status(200).json({ message: 'User successfully added to the group' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "unable to join group" });
   }
-
-  const filter = { type: 'messaging', id:groupId };
-  const channel = await chatClient.queryChannel(filter)
-  console.log(channel)
-  }catch(err){
-    console.log(err)
-    res.status(500).json({message:'unable to join group'})
-  }
-
-}
+};
 
 module.exports = {
   createGroup,
   getAllGroupsJoined,
   getAllGroups,
   getGroupDetails,
-  joinGroup
+  joinGroup,
 };

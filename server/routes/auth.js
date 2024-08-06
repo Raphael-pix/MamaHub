@@ -34,7 +34,7 @@ router.get("/search-users", search);
 router.get("/get-groups", getAllGroupsJoined);
 router.get("/all-groups", getAllGroups);
 router.get("/group-details", getGroupDetails);
-router.put("join-group",joinGroup)
+router.put("/join-group",joinGroup)
 
 router.post("/create-post",upload.single('media'),shareJourney)
 
