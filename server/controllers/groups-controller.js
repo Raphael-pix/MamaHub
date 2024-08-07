@@ -92,6 +92,7 @@ const createGroup = async (req, res) => {
     res.status(500).json({ message: ["unable to create group"] });
   }
 };
+//TODO: when addding groups to user db ensure you group name and date joined.
 
 const getAllGroupsJoined = async (req, res) => {
   const { userId } = req.query;
@@ -144,8 +145,7 @@ const getGroupDetails = async (req, res) => {
 
 const joinGroup = async (req, res) => {
   const { userId, groupId } = req.body;
-  console.log(userId, groupId);
-
+  console.log(userId,groupId);
   try {
     const user = await Users.findOne({ userId: userId });
 
@@ -165,14 +165,15 @@ const joinGroup = async (req, res) => {
 
     const channel = channels[0];
 
-    await channel.addMembers([userId]);
-    console.log(`User ${userId} added to group ${groupId}`);
+    // await channel.addMembers([userId]);
+    // console.log(`User ${userId} added to group ${groupId}`);
 
     // Update the user's groups
-    user.groups.push(groupId);
-    await user.save();
+    const updateGroup = { $addToSet: { groups: groupId } };
+    // const updatedUser = await user.updateOne({ userId }, updateGroup);
+    // await user.save();
 
-    res.status(200).json({ message: 'User successfully added to the group' });
+    res.status(200).json({ message: "User successfully added to the group" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "unable to join group" });
