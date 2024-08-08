@@ -145,40 +145,43 @@ const getGroupDetails = async (req, res) => {
 
 const joinGroup = async (req, res) => {
   const { userId, groupId } = req.body;
-  console.log(userId,groupId);
+  const client = StreamChat.getInstance(api_key, api_secret);
+
   try {
-    const user = await Users.findOne({ userId: userId });
-
-    if (user.groups.includes(groupId)) {
-      return res
-        .status(200)
-        .json({ message: "user is already a member of the group" });
-    }
-
-    const client = StreamChat.getInstance(api_key, api_secret);
-
+   
     const filter = { type: "messaging", id: groupId };
     const channels = await client.queryChannels(filter);
     if (channels.length === 0) {
       return res.status(404).json({ message: "Group not found" });
     }
-
     const channel = channels[0];
+    
+    const user = await Users.findOne({ userId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    // await channel.addMembers([userId]);
-    // console.log(`User ${userId} added to group ${groupId}`);
-
+    /*
+    const channelMembers = await channel.queryMembers({id:userId})
+    if (channelMembers.members.length > 0 ) {
+      return res
+        .status(200)
+        .json({ message: "User is already a member of the group" });
+    }
+    await channel.addMembers([userId]);
+    console.log(`User ${userId} added to group ${groupId}`);
+    */
     // Update the user's groups
-    const updateGroup = { $addToSet: { groups: groupId } };
-    // const updatedUser = await user.updateOne({ userId }, updateGroup);
-    // await user.save();
+    user.groups.push(groupId);
+    await user.save() // Save the updated user document
 
     res.status(200).json({ message: "User successfully added to the group" });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "unable to join group" });
+    console.error(err);
+    res.status(500).json({ message: "Unable to join group" });
   }
 };
+
 
 module.exports = {
   createGroup,
