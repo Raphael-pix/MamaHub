@@ -149,31 +149,28 @@ const joinGroup = async (req, res) => {
 
   try {
    
+    //find specific channel in getStream db
     const filter = { type: "messaging", id: groupId };
     const channels = await client.queryChannels(filter);
     if (channels.length === 0) {
       return res.status(404).json({ message: "Group not found" });
     }
     const channel = channels[0];
-    
-    const user = await Users.findOne({ userId });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
 
-    /*
+    //check if user is already memeber of the group
     const channelMembers = await channel.queryMembers({id:userId})
     if (channelMembers.members.length > 0 ) {
       return res
         .status(200)
         .json({ message: "User is already a member of the group" });
     }
+    //if not member add user to group in stream db
     await channel.addMembers([userId]);
     console.log(`User ${userId} added to group ${groupId}`);
-    */
-    // Update the user's groups
-    
-    await user.save({groups:user.groups.push(groupId)}) // Save the updated user document
+
+    // Update the user and group documents
+    await Users.updateOne({userId:userId},{ $addToSet: { groups: groupId }})
+    await Groups.updateOne({groupId:groupId},{ $addToSet: { members: {userId:userId} }})
 
     res.status(200).json({ message: "User successfully added to the group" });
   } catch (err) {
