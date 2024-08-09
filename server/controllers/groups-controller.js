@@ -172,8 +172,8 @@ const joinGroup = async (req, res) => {
     console.log(`User ${userId} added to group ${groupId}`);
     */
     // Update the user's groups
-    user.groups.push(groupId);
-    await user.save() // Save the updated user document
+    
+    await user.save({groups:user.groups.push(groupId)}) // Save the updated user document
 
     res.status(200).json({ message: "User successfully added to the group" });
   } catch (err) {
