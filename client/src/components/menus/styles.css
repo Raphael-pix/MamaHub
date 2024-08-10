@@ -1,0 +1,25 @@
+.group-menu-section{
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 5px 25px;
+    z-index: 2;
+}
+.group-menu-section button{
+    background-color: transparent;
+    font-weight: 500;
+    font-size: .7rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #111;
+    padding: 0;
+    margin: 7px 0;
+}
+.group-menu-section .button-red,.group-menu-section .button-red .icon{
+    color: #FF0800;
+}
+.group-menu-section button .icon{
+    color: #545454;
+    margin-right: 5px;
+}
+

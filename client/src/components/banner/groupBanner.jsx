@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import "./banner.css";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import Cookies from "universal-cookie";
 
@@ -10,9 +10,11 @@ import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 import { GlobalContext } from "../../context/context";
 import { BsThreeDots } from "react-icons/bs";
+import { GroupPopupMenu } from "..";
 
 const GroupBanner = ({ group, isMember }) => {
   const { setSelectedGroup, setIsGroupSelected } = useContext(GlobalContext);
+  const [isMenuVisible, setIsMenuVisible ] = useState(false);
   const { avatar, banner, name, members, description, topics } = group;
   const cookie = new Cookies();
   const userId = cookie.get("userId");
@@ -25,8 +27,8 @@ const GroupBanner = ({ group, isMember }) => {
   const handleJoinGroup = async () => {
     try {
       const response = await axios.put("http://localhost:5000/api/join-group", {
-          groupId: group.groupId,
-          userId
+        groupId: group.groupId,
+        userId,
       });
       console.log(response);
     } catch (err) {
@@ -72,7 +74,14 @@ const GroupBanner = ({ group, isMember }) => {
           </button>
         </div>
       </div>
-      <BsThreeDots size={24} color="white" className="settings-icon" />
+      <BsThreeDots
+        size={24}
+        color="white"
+        className="settings-icon"
+        onClick={() => setIsMenuVisible(!isMenuVisible)}
+      />
+
+      {isMenuVisible && <GroupPopupMenu />}
       <div className="fade-over"></div>
     </header>
   );
