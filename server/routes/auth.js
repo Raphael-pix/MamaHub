@@ -15,6 +15,7 @@ const {
   getAllGroups,
   getGroupDetails,
   joinGroup,
+  exitGroup,
 } = require("../controllers/groups-controller.js")
 
 const{shareJourney} = require("../controllers/posts-controller.js")
@@ -35,6 +36,7 @@ router.get("/get-groups", getAllGroupsJoined);
 router.get("/all-groups", getAllGroups);
 router.get("/group-details", getGroupDetails);
 router.put("/join-group",joinGroup)
+router.delete("/exit-group",exitGroup)
 
 router.post("/create-post",upload.single('media'),shareJourney)
 

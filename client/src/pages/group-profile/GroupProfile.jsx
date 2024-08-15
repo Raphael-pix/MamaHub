@@ -49,7 +49,7 @@ const GroupProfile = () => {
   };
   useEffect(() => {
     getGroupDetails();
-  }, [id]);
+  }, [id,group]);
  
   const checkUserisMember = (members)=>{
     const membersId = members.map(member=>{

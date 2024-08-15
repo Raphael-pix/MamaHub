@@ -81,7 +81,7 @@ const GroupBanner = ({ group, isMember }) => {
         onClick={() => setIsMenuVisible(!isMenuVisible)}
       />
 
-      {isMenuVisible && <GroupPopupMenu />}
+      {isMenuVisible && <GroupPopupMenu group={group}/>}
       <div className="fade-over"></div>
     </header>
   );

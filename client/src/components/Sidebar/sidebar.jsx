@@ -34,7 +34,7 @@ export default function SideBar() {
   }
   useEffect(()=>{
     getAllGroups()
-  },[userId])
+  },[userId,groups])
 
   // when logging out delete all the saved cookies  then navigate to the get started page
   const logout = () => {

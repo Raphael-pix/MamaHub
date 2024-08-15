@@ -148,7 +148,6 @@ const joinGroup = async (req, res) => {
   const client = StreamChat.getInstance(api_key, api_secret);
 
   try {
-   
     //find specific channel in getStream db
     const filter = { type: "messaging", id: groupId };
     const channels = await client.queryChannels(filter);
@@ -158,19 +157,24 @@ const joinGroup = async (req, res) => {
     const channel = channels[0];
 
     //check if user is already memeber of the group
-    const channelMembers = await channel.queryMembers({id:userId})
-    if (channelMembers.members.length > 0 ) {
+    const channelMembers = await channel.queryMembers({ id: userId });
+    if (channelMembers.members.length > 0) {
       return res
         .status(200)
         .json({ message: "User is already a member of the group" });
     }
     //if not member add user to group in stream db
     await channel.addMembers([userId]);
-    console.log(`User ${userId} added to group ${groupId}`);
 
     // Update the user and group documents
-    await Users.updateOne({userId:userId},{ $addToSet: { groups: groupId }})
-    await Groups.updateOne({groupId:groupId},{ $addToSet: { members: {userId:userId} }})
+    await Users.updateOne(
+      { userId: userId },
+      { $addToSet: { groups: groupId } }
+    );
+    await Groups.updateOne(
+      { groupId: groupId },
+      { $addToSet: { members: { userId: userId } } }
+    );
 
     res.status(200).json({ message: "User successfully added to the group" });
   } catch (err) {
@@ -179,6 +183,46 @@ const joinGroup = async (req, res) => {
   }
 };
 
+const exitGroup = async (req, res) => {
+  const { groupId, userId } = req.body;
+  const client = StreamChat.getInstance(api_key, api_secret);
+ 
+  try {
+    //find specific channel in getStream db
+    const filter = { type: "messaging", id: groupId };
+    const channels = await client.queryChannels(filter);
+    if (channels.length === 0) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+    const channel = channels[0];
+    //check if user is already memeber of the group
+    const channelMembers = await channel.queryMembers({ id: userId });
+    if (channelMembers.members.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "user is not member of group" });
+    }
+    //remove member from get stream
+    await channel.removeMembers([userId]);
+
+    //remove member from user db
+    await Users.updateOne(
+      { userId: userId },
+      { $pull: { groups: groupId } }
+    );
+
+    //remove member from group db
+    await Groups.updateOne(
+      { groupId: groupId },
+      { $pull: { members: { userId: userId } } }
+    );
+
+    return res.status(200).json({message:"member exited group successfully"})
+  } catch (err) {
+    return res.status(500).json({message:"member unable to exit group"})
+  }
+  //remove member from group and user db
+};
 
 module.exports = {
   createGroup,
@@ -186,4 +230,5 @@ module.exports = {
   getAllGroups,
   getGroupDetails,
   joinGroup,
+  exitGroup,
 };
