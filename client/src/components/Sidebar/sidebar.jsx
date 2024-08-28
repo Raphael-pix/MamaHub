@@ -45,6 +45,7 @@ export default function SideBar() {
     cookies.remove("name");
     cookies.remove("image");
     cookies.remove("profile Token");
+    cookies.remove("username");
 
     navigate("/get-started");
     window.location.reload();

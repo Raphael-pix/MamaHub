@@ -167,7 +167,7 @@ const login = async (req, res) => {
           avatar: avatar,
         });
       } else {
-        res.status(500).json({ message: ["Incorrect password"] });
+        res.status(500).json({ message: ["Incorrect email or password. Please try again"] });
       }
     } else {
       res

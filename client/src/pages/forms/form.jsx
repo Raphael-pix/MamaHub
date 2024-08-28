@@ -19,15 +19,15 @@ const initialState = {
 
 export default function Signup() {
   const [form, setForm] = useState(initialState);
-  const { isSignup, switchForm } = useContext(GlobalContext);
   const [, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isPassowrdVisible, setIsPasswordVisible] = useState(false);
+  const { isSignup, switchForm } = useContext(GlobalContext);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    console.log(form);
+    setError('')
   };
 
   // after logging in or signing up check the page the user is in
@@ -37,6 +37,7 @@ export default function Signup() {
     isSignup ? navigate("/create-profile") : navigate("/home");
     window.location.reload();
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,7 +107,7 @@ export default function Signup() {
               <div className="input-wrapper">
                 <FaLock size={16} className="user-icon icon" />
                 <input
-                  type={isPassowrdVisible ? "text" : "password"}
+                  type={isPasswordVisible ? "text" : "password"}
                   name="password"
                   id="password"
                   className="form-input"
@@ -115,9 +116,9 @@ export default function Signup() {
                 />
                 <div
                   className="showPassword-container"
-                  onClick={() => setIsPasswordVisible(!isPassowrdVisible)}
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                 >
-                  {isPassowrdVisible ? (
+                  {isPasswordVisible ? (
                     <FaRegEye size={14} className="icon" />
                   ) : (
                     <FaRegEyeSlash size={14} className="icon" />
@@ -133,7 +134,7 @@ export default function Signup() {
                 <div className="input-wrapper">
                   <FaLock size={16} className="user-icon icon" />
                   <input
-                    type={isPassowrdVisible ? "text" : "password"}
+                    type={isPasswordVisible ? "text" : "password"}
                     name="confirmPassword"
                     id="confirmPassword"
                     className="form-input"
@@ -142,9 +143,9 @@ export default function Signup() {
                   />
                   <div
                     className="showPassword-container"
-                    onClick={() => setIsPasswordVisible(!isPassowrdVisible)}
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                   >
-                    {isPassowrdVisible ? (
+                    {isPasswordVisible ? (
                       <FaRegEye size={14} className="icon" />
                     ) : (
                       <FaRegEyeSlash size={14} className="icon" />
